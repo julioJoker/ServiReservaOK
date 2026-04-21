@@ -10,8 +10,13 @@
 
     $session = new Session;
     $paciente = new PacienteModel;
-    $pacientes = $paciente->getPacientes();
-
+    //$pacientes = $paciente->getPacientes();
+    if (isset($_GET['buscar']) && $_GET['buscar'] != '') {
+        $buscar = trim($_GET['buscar']);
+        $pacientes = $paciente->buscarPacientes($buscar);
+    } else {
+        $pacientes = $paciente->getPacientes();
+    }
     //print_r($roles);exit;
 
     $title = 'Pacientes';
@@ -104,6 +109,16 @@
         border-radius: 12px;
         border: 1px solid #334155;
     }
+
+    .input-group input{
+        background:#1e293b;
+        color:#fff;
+        border:1px solid #334155;
+    }
+
+    .input-group input::placeholder{
+        color:#94a3b8;
+    }
 </style>
 <body>
     <header>
@@ -117,6 +132,29 @@
             <?php include('../partials/mensajes.php'); ?>
 
             <?php if(!empty($pacientes)): ?>
+                <form method="GET" class="mb-3">
+                    <div class="input-group">
+
+                        <input 
+                            type="text" 
+                            name="buscar" 
+                            class="form-control" 
+                            placeholder="🔍 Buscar por nombre o RUT..."
+                            value="<?= $_GET['buscar'] ?? '' ?>"
+                        >
+
+                        <button class="btn btn-outline-info" type="submit">
+                            Buscar
+                        </button>
+
+                        <?php if (!empty($_GET['buscar'])): ?>
+                            <a href="index.php" class="btn btn-outline-secondary">
+                                ❌ Limpiar
+                            </a>
+                        <?php endif; ?>
+
+                    </div>
+                </form>
                 <table class="table table-hover">
                     <tr>
                         <th>RUT</th>

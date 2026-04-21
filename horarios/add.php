@@ -16,7 +16,29 @@
 
         //print_r($_POST);exit;
 
-        $horario = trim(strip_tags($_POST['horario'])); //sanitizacion basica
+        $horario = trim(strip_tags($_POST['horario']));
+
+        if (!$horario) {
+            $msg = 'Ingrese el horario';
+        } elseif (!preg_match('/^(?:[01]\d|2[0-3])-[0-5]\d$/', $horario)) {
+            $msg = 'Formato inválido. Use HH-MM (ej: 07-45)';
+        } else {
+
+            $res = $horarios->getHorarioHorario($horario);
+
+            if (!empty($res)) {
+                $msg = 'El horario ingresado ya existe... intente con otro';
+            } else {
+
+                $res = $horarios->addHorario($horario);
+
+                if (!empty($res)) {
+                    $_SESSION['success'] = 'El horario se ha registrado correctamente';
+                    header('Location: ' . HORARIOS);
+                    exit;
+                }
+            }
+        }
 
         //print_r($nombre);exit;
 
@@ -85,7 +107,14 @@ body {
             <form name="form" action="" method="post">
                 <div class="mb-3">
                     <label for="horario" class="form-label">Horario<span class="text-danger">*</span>  </label>
-                    <input type="text" name="horario" value="<?php if(isset($_POST['horario'])) echo $_POST['horario']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
+                    <input type="text"
+                        name="horario"
+                        value="<?php if(isset($_POST['horario'])) echo $_POST['horario']; ?>"
+                        class="form-control"
+                        pattern="^(?:[01]\d|2[0-3])-[0-5]\d$"
+                        placeholder="07-45"
+                        required
+                        aria-describedby="empleadoHelpInline">
                         <div class="form-text text-white">Ingrese el horario</div>
                 </div>
                 <div class="mb-3">

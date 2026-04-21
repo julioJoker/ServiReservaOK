@@ -58,54 +58,175 @@
         <!-- llamada a archivo de menu -->
         <?php include('../partials/menu.php'); ?>
     </header>
-    <div class="container-fluid">
-        <div class="col-md-6 offset-md-3">
-            <h4><?php echo $title; ?></h4>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-            <p class="text-danger">Campos obligatorios *</p>
+    <style>
+
+        /* ===== FONDO ===== */
+        body{
+            min-height:100vh;
+            margin:0;
+            font-family: 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top, #0f172a, #020617);
+            color:#e5e7eb;
+        }
+
+        /* CONTENEDOR */
+        .wrapper{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:90vh;
+        }
+
+        /* CARD MODERNA */
+        .card-modern{
+            width:100%;
+            max-width:500px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(14px);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:20px;
+            padding:30px;
+            box-shadow:0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        /* TITULO */
+        .card-modern h4{
+            font-weight:700;
+            margin-bottom:10px;
+        }
+
+        /* INPUT */
+        .form-control{
+            background: rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.15);
+            color:#fff;
+            border-radius:12px;
+        }
+
+        .form-control:focus{
+            background: rgba(255,255,255,0.1);
+            color:#fff;
+            border-color:#38bdf8;
+            box-shadow:0 0 0 0.2rem rgba(56,189,248,0.25);
+        }
+
+        /* BOTONES */
+        .btn-modern{
+            border-radius:12px;
+            padding:10px 18px;
+            font-weight:600;
+            transition:0.2s;
+        }
+
+        .btn-success{
+            background: linear-gradient(135deg, #22c55e, #4ade80);
+            border:none;
+        }
+
+        .btn-success:hover{
+            transform:translateY(-2px);
+            box-shadow:0 10px 25px rgba(34,197,94,0.3);
+        }
+
+        .btn-secondary{
+            background: rgba(255,255,255,0.1);
+            border:none;
+            color:#e5e7eb;
+        }
+
+        .btn-secondary:hover{
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* ALERTA */
+        .alert{
+            border-radius:12px;
+        }
+
+        /* TEXTO */
+        small, .form-text{
+            color:#94a3b8 !important;
+        }
+
+        select.form-control{
+            background-color: rgba(255,255,255,0.08);
+            color: #ffffff;
+        }
+
+        /* 🔥 SOLUCIÓN CLAVE */
+        select.form-control option{
+            color: #000;          /* texto negro */
+            background: #fff;     /* fondo blanco */
+        }
+
+    </style>
+    <div class="wrapper">
+
+        <div class="card-modern">
+
+            <h4>✏️ <?= $title; ?></h4>
 
             <?php if(isset($msg)): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?php echo $msg; ?>
+                <div class="alert alert-danger">
+                    <?= $msg; ?>
                 </div>
             <?php endif; ?>
 
             <?php if($usuario): ?>
-                <form name="form" action="" method="post">
+                <form method="post">
+
                     <div class="mb-3">
-                        <label for="clave" class="form-label">Empleado: <?php echo $usuario['empleado']; ?> </label>
+                        <label class="form-label">
+                            👤 <strong>Empleado:</strong> <?= $usuario['empleado']; ?>
+                        </label>
                     </div>
+
                     <div class="mb-3">
-                        <label for="activo" class="form-label">Estado<span class="text-danger">*</span>  </label>
+
+                        <div class="mb-2">
+                            <small>Estado actual:</small><br>
+                            <strong>
+                                <?= $usuario['activo'] == 1 ? '🟢 Activo' : '🔴 Inactivo'; ?>
+                            </strong>
+                        </div>
                         <select name="activo" class="form-control">
-                            <option value="<?php $usuario['activo']; ?>">
-                                <?php
-                                    if ($usuario['activo'] == 1) {
-                                        echo "Activo";
-                                    }else {
-                                        echo "Inactivo";
-                                    }
-                                ?>
-                            </option>
 
                             <option value="">Seleccione...</option>
-
                             <option value="1">Activar</option>
                             <option value="2">Desactivar</option>
+
                         </select>
-                        <div id="usuarioHelp" class="form-text text-danger">Seleccione el estado del Empleado</div>
+
+                        <small>Seleccione el estado del empleado</small>
                     </div>
 
-                    <div class="mb-3">
-                        <input type="hidden" name="confirm" value="1">
-                        <button type="submit" class="btn btn-outline-success">Editar</button>
-                        <a href="<?php echo SHOW_EMPLEADO . $usuario['empleado_id']; ?>" class="btn btn-outline-primary">Volver</a>
+                    <input type="hidden" name="confirm" value="1">
+
+                    <div class="d-flex justify-content-between mt-4">
+
+                        <button type="submit" class="btn btn-success btn-modern">
+                             Guardar cambios
+                        </button>
+
+                        <a href="<?= SHOW_EMPLEADO . $usuario['empleado_id']; ?>" 
+                        class="btn btn-secondary btn-modern">
+                            ⬅ Volver
+                        </a>
+
                     </div>
+
                 </form>
+
             <?php else: ?>
-                <p class="text-info">El usuario no pudo ser modificado</p>
+                <div class="alert alert-info">
+                    El usuario no pudo ser modificado
+                </div>
             <?php endif; ?>
+
         </div>
+
     </div>
 </body>
 </html>

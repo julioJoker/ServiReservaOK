@@ -125,7 +125,7 @@ body {
                 <div class="card shadow-sm">
                     <div class="card-body">
 
-                        <h4 class="mb-3"><?php echo $title; ?></h4>
+                    <h4 class="mb-3 text-black"><?php echo $title; ?></h4>
 
                         <?php include('../partials/mensajes.php'); ?>
 

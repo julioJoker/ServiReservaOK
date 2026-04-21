@@ -33,6 +33,18 @@
 
 <header>
     <?php include('../partials/menu.php'); ?>
+    <?php include('../partials/mensajes.php'); ?>
+    <?php if(isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger">
+        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+    </div>
+    <?php endif; ?>
+
+    <?php if(isset($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+        </div>
+    <?php endif; ?>
 </header>
 <style>
     body {
@@ -167,9 +179,9 @@
                             <th>Especialidad</th>
                             <th>Fecha</th>
                             <th>Horario</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <?php foreach($reservas as $reserva): ?>
                             <tr>
@@ -181,15 +193,29 @@
                                         ?>
                                     </a>
                                 </td>
+
                                 <td><?= $reserva['nombreEmpleado']; ?></td>
                                 <td><?= $reserva['especialidad']; ?></td>
+
                                 <td>
                                     <?php
                                         $fecha = new DateTime($reserva['fecha']);
                                         echo $fecha->format('d-m-Y');
                                     ?>
                                 </td>
+
                                 <td><?= $reserva['horario']; ?></td>
+
+                                <td>
+                                <?php if ($_SESSION['usuario_rol'] === 'Administrador'): ?>
+                                    <a href="<?= DELETE_RESERVA . $reserva['id']; ?>"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Eliminar?');">
+                                        Eliminar
+                                    </a>
+                                <?php endif; ?>
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

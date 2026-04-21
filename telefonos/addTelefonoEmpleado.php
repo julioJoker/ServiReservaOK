@@ -132,6 +132,16 @@ body {
     padding: 10px 15px;
     margin-bottom: 15px;
 }
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
 </style>
 
 <div class="container py-4">

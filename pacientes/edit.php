@@ -142,8 +142,10 @@
                             </div>
                         <?php endif; ?>
 
-                        <?php if($paciente): ?>
-
+                        <?php if($paciente): /*var_dump($paciente)*/ echo '<pre>';
+var_dump($paciente);
+echo '</pre>'; ?>
+                            
                         <form method="post">
 
                             <!-- NOMBRE -->
@@ -181,7 +183,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Dirección *</label>
                                 <input type="text" name="dirección"
-                                    value="<?= $paciente['dirección']; ?>"
+                                    value="<?= $paciente['direccion']; ?>"
                                     class="form-control">
                             </div>
 

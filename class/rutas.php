@@ -58,3 +58,7 @@ define('RESERVAS', BASE_URL . 'reservas/');
 define('ADD_RESERVA', RESERVAS . 'add.php?paciente=' . PARAM);
 define('SHOW_RESERVA', RESERVAS . 'show.php?reserva=' . PARAM);
 define('EDIT_RESERVA', RESERVAS . 'edit.php?reserva=' . PARAM);
+
+# ruta JSN 
+
+define('DELETE_RESERVA', BASE_URL . 'reservas/delete.php?id=');

@@ -35,10 +35,38 @@
         
         
         if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
-            $fecha = trim(strip_tags($_POST['fecha']));
-            $esp = filter_var($_POST['especialidad'], FILTER_VALIDATE_INT);
-            $nombreProfecional = trim(strip_tags($_POST['nomEmpl'])); 
-            $hor = filter_var($_POST['horario'], FILTER_VALIDATE_INT);
+        $fecha = trim(strip_tags($_POST['fecha']));
+        $esp = filter_var($_POST['especialidad'], FILTER_VALIDATE_INT);
+        $nombreProfecional = trim(strip_tags($_POST['nomEmpl'])); 
+        $hor = filter_var($_POST['horario'], FILTER_VALIDATE_INT);
+
+        $hoy = date('Y-m-d');
+
+        if (!$fecha) {
+            $msg = 'Ingrese una fecha para la reserva';
+        } elseif ($fecha < $hoy) {
+            $msg = 'No puedes seleccionar una fecha anterior al día actual';
+        } elseif (!$esp) {
+            $msg = 'Seleccione una especialidad';
+        } elseif (!$hor) {
+            $msg = 'Seleccione un horario';
+        } else {
+
+    $res = $reservas->getReservaPacienteEspecialidadHorario($esp, $id_paciente, $hor);
+
+    if ($res) {
+        $msg = 'El paciente ya tiene reserva con la especialidad y horario ingresados';
+    } else {
+
+        $res = $reservas->addReserva($fecha, $esp, $id_paciente, $_SESSION['usuario_id'], $hor, $nombreProfecional);
+
+        if ($res) {
+            $_SESSION['success'] = 'La reserva se ha realizado correctamente';
+            header('Location: ' . BASE_URL);
+            exit;
+        }
+    }
+}
            
          
             
@@ -183,8 +211,9 @@
                 <div class="mb-3">
                     <label class="form-label">Fecha *</label>
                     <input type="date" name="fecha"
-                        value="<?= $_POST['fecha'] ?? '' ?>"
-                        class="form-control">
+                        min="<?= date('Y-m-d'); ?>"
+                        class="form-control"
+                        value="<?= $_POST['fecha'] ?? '' ?>">
                 </div>
 
                 <div class="mb-3">

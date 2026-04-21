@@ -90,4 +90,19 @@ public function addPaciente($rut, $nombre, $email, $fecha_nacimiento, $fonasa, $
         $row = $pac->rowCount();
         return $row;
     }
+
+
+    public function buscarPacientes($texto){
+        $sql = "SELECT * FROM pacientes 
+                WHERE nombre LIKE :texto 
+                OR rut LIKE :texto
+                ORDER BY nombre ASC";
+
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute([
+            ':texto' => '%' . $texto . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

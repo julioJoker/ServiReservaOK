@@ -11,22 +11,22 @@ class ReservaModel extends Model
     public function getReservas()
     {
       //  $res = $this->_db->query("SELECT r.id, r.fecha, r.activo, r.created_at, e.nombre as especialidad, h.horario as horario , r.especialidad_id  as especialidad_id   FROM reservas r INNER JOIN especialidades e ON r.especialidad_id = e.id INNER JOIN horarios h ON r.horario_id = h.id ORDER BY r.created_at DESC limit 10");
-$res = $this->_db->query("
-    SELECT 
-        r.id, 
-        r.fecha, 
-        r.activo, 
-        r.created_at, 
-        e.nombre AS especialidad, 
-        h.horario AS horario,
-        emp.nombre AS nombreEmpleado
-    FROM reservas r
-    INNER JOIN especialidades e ON r.especialidad_id = e.id
-    INNER JOIN horarios h ON r.horario_id = h.id
-    INNER JOIN empleados emp ON r.Usuario_id = emp.id
-    ORDER BY r.created_at DESC 
-    LIMIT 10
-");
+        $res = $this->_db->query("
+            SELECT 
+                r.id, 
+                r.fecha, 
+                r.activo, 
+                r.created_at, 
+                e.nombre AS especialidad, 
+                h.horario AS horario,
+                emp.nombre AS nombreEmpleado
+            FROM reservas r
+            INNER JOIN especialidades e ON r.especialidad_id = e.id
+            INNER JOIN horarios h ON r.horario_id = h.id
+            INNER JOIN empleados emp ON r.Usuario_id = emp.id
+            ORDER BY r.created_at DESC 
+            LIMIT 10
+        ");
         return $res->fetchall();
     }
 
@@ -127,5 +127,12 @@ $res = $this->_db->query("
 
         $row = $res->rowCount();
         return $row;
+    }
+    public function deleteReserva($id)
+    {
+        $sql = "DELETE FROM reservas WHERE id = :id";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }

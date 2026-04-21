@@ -1,16 +1,31 @@
 <?php
+// 🔥 IMPORTANTE: NO DEBE HABER NADA ANTES DE ESTO (ni espacios)
+
+// Errores
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-header('Content-Type: text/html; charset=UTF-8');
-require_once 'class/rutas.php';
-require_once 'class/config.php';
+
+// ⚠️ La sesión debe iniciar antes de cualquier salida
 require_once 'class/session.php';
 
+// Configuración y rutas
+require_once 'class/rutas.php';
+require_once 'class/config.php';
+
+// Iniciar sesión de forma segura (por si no se hizo dentro de session.php)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Header (después de includes, pero antes de cualquier HTML)
+header('Content-Type: text/html; charset=UTF-8');
+
+// Instancia de sesión
 $session = new Session();
 
-// ✅ VALIDAR SESIÓN
+// Validación de login
 if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
-    header('Location: ' . LOGIN); // usa tu ruta de login
+    header('Location: ' . LOGIN);
     exit;
 }
 
@@ -19,93 +34,81 @@ $title = 'Panel de Control';
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title><?= TITLE . $title ?></title>
+    <title><?= TITLE . $title ?></title>
 
-<link href="bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<style>
+    <link rel="icon" type="image/png" href="img/favicon.png">
 
-/* ===== BASE ===== */
-body{
-    min-height:100vh;
-    margin:0;
-    font-family: system-ui, sans-serif;
-    color:#e5e7eb;
-    background: radial-gradient(circle at top, #0f172a, #020617);
-}
+    <style>
+        body{
+            min-height:100vh;
+            margin:0;
+            font-family: 'Segoe UI', sans-serif;
+            color:#e5e7eb;
+            background: radial-gradient(circle at top, #0f172a, #020617);
+        }
 
-/* HEADER HERO */
-.hero{
-    padding:80px 20px 40px;
-    text-align:center;
-}
+        .hero{
+            padding:70px 20px 30px;
+            text-align:center;
+        }
 
-/* TITULO PRINCIPAL */
-.hero h1{
-    font-size:2.2rem;
-    font-weight:800;
-    margin-bottom:10px;
-    color:#ffffff;
-}
+        .hero h1{
+            font-size:2.5rem;
+            font-weight:800;
+        }
 
-.hero p{
-    color:#94a3b8;
-    font-size:1rem;
-}
+        .hero p{
+            color:#94a3b8;
+        }
 
-/* CARD PRINCIPAL */
-.glass-card{
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(14px);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:18px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.5);
-    padding:25px;
-}
+        .dashboard{
+            margin-top:30px;
+        }
 
-/* BOTON PRINCIPAL */
-.btn-main{
-    display:block;
-    width:100%;
-    padding:18px;
-    font-size:1.1rem;
-    font-weight:700;
-    border-radius:14px;
-    text-align:center;
-    text-decoration:none;
-    color:#0f172a;
-    background: linear-gradient(135deg, #38bdf8, #60a5fa);
-    transition:0.25s ease;
-    box-shadow:0 10px 30px rgba(56,189,248,0.25);
-}
+        .card-modern{
+            background: rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border-radius:20px;
+            padding:25px;
+            text-align:center;
+            transition:0.3s;
+            cursor:pointer;
+        }
 
-.btn-main:hover{
-    transform:translateY(-3px);
-    box-shadow:0 15px 40px rgba(56,189,248,0.35);
-    color:#0f172a;
-}
+        .card-modern:hover{
+            transform:translateY(-6px);
+            box-shadow:0 20px 50px rgba(0,0,0,0.6);
+        }
 
-/* MODAL */
-.modal-content{
-    border-radius:16px;
-    background:#0f172a;
-    color:#e5e7eb;
-}
+        .icon{
+            font-size:40px;
+            margin-bottom:10px;
+        }
 
-.spinner-border{
-    width:3rem;
-    height:3rem;
-}
+        .card-modern h5{
+            font-weight:700;
+            margin-bottom:5px;
+        }
 
-small{
-    color:#94a3b8;
-}
+        .card-modern p{
+            font-size:0.9rem;
+            color:#94a3b8;
+        }
 
-</style>
-<link rel="icon" type="image/png" href="img/favicon.png">
+        .modal-content{
+            border-radius:16px;
+            background:#0f172a;
+            color:#e5e7eb;
+        }
+    </style>
 </head>
 
 <body>
@@ -116,61 +119,80 @@ small{
 
 <!-- MODAL LOADING -->
 <div class="modal fade" id="loadingModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center p-4">
-
-        <div class="spinner-border text-info mx-auto mb-3"></div>
-
-        <h5 class="fw-bold">Cargando sistema</h5>
-        <small>Preparando módulo de reservas médicas...</small>
-
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center p-4">
+            <div class="spinner-border text-info mx-auto mb-3"></div>
+            <h5 class="fw-bold">Cargando sistema</h5>
+            <small>Preparando módulo de reservas médicas...</small>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- HERO -->
 <div class="hero">
-    <h1> Sistema de Reservas Oftalmologicas</h1>
-    <p>Gestion de citas medicas, pacientes y profesionales en un solo lugar</p>
+    <h1>Sistema de Reservas</h1>
+    <p>Gestin de citas medicas, pacientes y profesionales</p>
 </div>
 
-<!-- CONTENIDO -->
-<div class="container">
+<div class="container dashboard">
+    <div class="row g-4">
 
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-
-            <div class="glass-card">
-
-                <a href="#" 
-                   data-url="<?= RESERVAS ?>" 
-                   class="btn-main btn-reserva">
-
-                    Ver y Gestionar Reservas
-                </a>
-
+        <div class="col-md-3 col-6">
+            <div class="card-modern btn-go" data-url="<?= RESERVAS ?>">
+                <div class="icon">
+                  <i class="bi bi-calendar"></i>
+                </div>
+                <h5>Reservas</h5>
+                <p>Ver y gestionar citas</p>
             </div>
-
         </div>
-    </div>
 
+        <div class="col-md-3 col-6">
+            <div class="card-modern btn-go" data-url="pacientes/">
+                <div class="icon">
+                 <i class="bi bi-person-lines-fill fs-1"></i>
+                </div>
+                <h5>Pacientes</h5>
+                <p>Administrar pacientes</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="card-modern btn-go" data-url="empleados/">
+                <div class="icon">
+                    <i class="bi bi-person-vcard"></i>
+                </div>
+                <h5>Profesionales</h5>
+                <p>Gestionar medicos</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="card-modern btn-go" data-url="horarios/">
+                <div class="icon">
+                  <i class="bi bi-clock"></i>
+                </div>
+                <h5>Horarios</h5>
+                <p>Configurar disponibilidad</p>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-document.querySelectorAll('.btn-reserva').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        const url = this.getAttribute('data-url');
+document.querySelectorAll('.btn-go').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const url = this.dataset.url;
 
         const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
         modal.show();
 
         setTimeout(() => {
             window.location.href = url;
-        }, 1500);
+        }, 1200);
     });
 });
 </script>

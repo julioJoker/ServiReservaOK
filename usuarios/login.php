@@ -182,9 +182,7 @@ body{
             Ingresar al sistema
         </button>
 
-        <a href="<?= BASE_URL ?>" class="btn-cancel">
-            Cancelar
-        </a>
+
 
     </form>
 
