@@ -24,8 +24,8 @@ class ReservaModel extends Model
             INNER JOIN especialidades e ON r.especialidad_id = e.id
             INNER JOIN horarios h ON r.horario_id = h.id
             INNER JOIN empleados emp ON r.Usuario_id = emp.id
-            ORDER BY r.created_at DESC 
-            LIMIT 10
+            ORDER BY r.fecha asc 
+
         ");
         return $res->fetchall();
     }
@@ -134,5 +134,32 @@ class ReservaModel extends Model
         $stmt = $this->_db->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
+    }
+
+    public function buscarReservas($buscar)
+    {
+        $sql = "SELECT 
+                    r.id, r.fecha, r.created_at,
+                    e.nombre as especialidad,
+                    emp.nombre as nombreEmpleado,
+                    h.horario
+                FROM reservas r
+                INNER JOIN especialidades e ON r.especialidad_id = e.id
+                INNER JOIN horarios h ON r.horario_id = h.id
+                INNER JOIN usuarios u ON r.usuario_id = u.id
+                INNER JOIN empleados emp ON u.empleado_id = emp.id
+                INNER JOIN pacientes p ON r.paciente_id = p.id
+                WHERE 
+                    p.nombre LIKE :buscar OR
+                    emp.nombre LIKE :buscar OR
+                    e.nombre LIKE :buscar
+                ORDER BY r.fecha DESC";
+
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute([
+            ':buscar' => "%$buscar%"
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

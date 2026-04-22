@@ -15,6 +15,13 @@
     //print_r($roles);exit;
 
     $title = 'Reservas';
+    $buscar = $_GET['buscar'] ?? null;
+
+    if ($buscar) {
+        $reservas = $reserva->buscarReservas($buscar);
+    } else {
+        $reservas = $reserva->getReservas();
+    }
 
 ?>
 <?php if(isset($_SESSION['autenticado'])): ?>
@@ -28,6 +35,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="../img/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -153,6 +161,33 @@
         }
     }
 
+    .search-box {
+        background: rgba(255,255,255,0.15);
+        border-radius: 12px;
+        padding: 5px;
+        backdrop-filter: blur(8px);
+    }
+
+    .search-box .form-control {
+        background: transparent;
+        color: white;
+        box-shadow: none;
+    }
+
+    .search-box .form-control::placeholder {
+        color: #ddd;
+    }
+
+    .search-box .form-control:focus {
+        outline: none;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .search-box .btn {
+        border-radius: 10px;
+    }
+
 
 </style>
 <div class="container mt-3 px-2">
@@ -169,6 +204,30 @@
         <?php include('../partials/mensajes.php'); ?>
 
         <?php if(!empty($reservas)): ?>
+            <form method="GET" class="mb-3">
+                <div class="input-group search-box">
+                    <span class="input-group-text bg-transparent border-0 text-white">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input 
+                        type="text" 
+                        name="buscar" 
+                        class="form-control border-0"
+                        placeholder="Buscar paciente, profesional o especialidad..."
+                        value="<?= $_GET['buscar'] ?? '' ?>"
+                    >
+
+                    <button class="btn btn-primary px-3" type="submit">
+                        Buscar
+                    </button>
+
+                    <a href="?" class="btn btn-outline-light px-3">
+                        Limpiar
+                    </a>
+
+                </div>
+            </form>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     

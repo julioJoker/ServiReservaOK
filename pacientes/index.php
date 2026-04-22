@@ -177,8 +177,10 @@
                                 <?php
                                     if ($paciente['fonasa'] == 1) {
                                         echo 'Fonasa';
-                                    }else {
+                                    } elseif ($paciente['fonasa'] == 2) {
                                         echo 'Isapre';
+                                    } else {
+                                        echo 'Particular';
                                     }
                                 ?>
                             </td>

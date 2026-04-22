@@ -123,7 +123,7 @@ $title = 'Panel de Control';
         <div class="modal-content text-center p-4">
             <div class="spinner-border text-info mx-auto mb-3"></div>
             <h5 class="fw-bold">Cargando sistema</h5>
-            <small>Preparando módulo de reservas médicas...</small>
+            <small>Preparando modulo de reservas medicas...</small>
         </div>
     </div>
 </div>

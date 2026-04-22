@@ -200,12 +200,12 @@ body{
         </table>
 
         <div class="mt-4 d-flex gap-2">
-
-            <?php if($_SESSION['usuario_rol'] == 'Administrador'): ?>
+<!-- 
+            <?php /*if($_SESSION['usuario_rol'] == 'Administrador'):*/ ?>
                 <a href="<?= EDIT_RESERVA . $id ?>" class="btn btn-outline-success">
                     ✏️ Editar
                 </a>
-            <?php endif; ?>
+            <?php/* endif;*/ ?> -->
 
         </div>
 
