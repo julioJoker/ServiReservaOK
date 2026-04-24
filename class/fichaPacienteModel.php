@@ -62,4 +62,19 @@ class PacienteModel2 extends Model
         $row = $pac->rowCount();
         return $row;
     }
+
+
+public function getFichasPaciente($id)
+{
+    $sql = $this->_db->prepare("
+        SELECT id, nombre_profe, especialidad, created_at
+        FROM ficha_paciente
+        WHERE paciente_id = ?
+    ");
+
+    $sql->bindParam(1, $id);
+    $sql->execute();
+
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
+}
 }

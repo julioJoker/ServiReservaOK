@@ -55,138 +55,153 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
 
 <style>
 
-/* ===== FONDO ===== */
-body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-family: system-ui, sans-serif;
-    background: radial-gradient(circle at top, #0f172a, #020617);
-    color:#e5e7eb;
-}
+    /* ===== FONDO ===== */
+    body{
+        margin:0;
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-family: system-ui, sans-serif;
+        background: radial-gradient(circle at top, #0f172a, #020617);
+        color:#e5e7eb;
+    }
 
-/* CARD LOGIN */
-.login-box{
-    width:100%;
-    max-width:420px;
-    padding:40px 30px;
-    border-radius:20px;
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(18px);
-    border:1px solid rgba(255,255,255,0.1);
-    box-shadow:0 20px 60px rgba(0,0,0,0.6);
-    text-align:center;
-}
+    /* CARD LOGIN */
+    .login-box{
+        width:100%;
+        max-width:420px;
+        padding:40px 30px;
+        border-radius:20px;
+        background: rgba(255,255,255,0.06);
+        backdrop-filter: blur(18px);
+        border:1px solid rgba(255,255,255,0.1);
+        box-shadow:0 20px 60px rgba(0,0,0,0.6);
+        text-align:center;
+    }
 
-/* LOGO / TITULO */
-.brand{
-    font-family: "Courier New", monospace;
-    font-size:2rem;
-    font-weight:700;
-    margin-bottom:5px;
-}
+    /* LOGO / TITULO */
+    .brand{
+        font-family: "Courier New", monospace;
+        font-size:2rem;
+        font-weight:700;
+        margin-bottom:5px;
+    }
 
-.subtitle{
-    color:#94a3b8;
-    font-size:0.9rem;
-    margin-bottom:25px;
-}
+    .subtitle{
+        color:#94a3b8;
+        font-size:0.9rem;
+        margin-bottom:25px;
+    }
 
-/* INPUTS */
-.form-control{
-    background:#0b1220;
-    border:1px solid #334155;
-    color:#e5e7eb;
-    border-radius:12px;
-    padding:12px;
-    margin-bottom:15px;
-}
+    /* INPUTS */
+    .form-control{
+        background:#0b1220;
+        border:1px solid #334155;
+        color:#e5e7eb;
+        border-radius:12px;
+        padding:12px;
+        margin-bottom:15px;
+    }
 
-.form-control:focus{
-    border-color:#38bdf8;
-    box-shadow:0 0 0 0.2rem rgba(56,189,248,0.2);
-}
+    .form-control:focus{
+        border-color:#38bdf8;
+        box-shadow:0 0 0 0.2rem rgba(56,189,248,0.2);
+    }
 
-/* BOT脫N */
-.btn-login{
-    width:100%;
-    padding:12px;
-    border-radius:12px;
-    font-weight:700;
-    border:none;
-    background: linear-gradient(135deg, #38bdf8, #60a5fa);
-    color:#0f172a;
-    transition:0.2s ease;
-}
+    /* BOT脫N */
+    .btn-login{
+        width:100%;
+        padding:12px;
+        border-radius:12px;
+        font-weight:700;
+        border:none;
+        background: linear-gradient(135deg, #38bdf8, #60a5fa);
+        color:#0f172a;
+        transition:0.2s ease;
+    }
 
-.btn-login:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 30px rgba(56,189,248,0.3);
-}
+    .btn-login:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 30px rgba(56,189,248,0.3);
+    }
 
-/* CANCEL */
-.btn-cancel{
-    display:block;
-    margin-top:12px;
-    color:#94a3b8;
-    text-decoration:none;
-    font-size:0.9rem;
-}
+    /* CANCEL */
+    .btn-cancel{
+        display:block;
+        margin-top:12px;
+        color:#94a3b8;
+        text-decoration:none;
+        font-size:0.9rem;
+    }
 
-.btn-cancel:hover{
-    color:#e5e7eb;
-}
+    .btn-cancel:hover{
+        color:#e5e7eb;
+    }
 
-/* ALERT */
-.alert{
-    border-radius:12px;
-    font-size:0.9rem;
-}
+    /* ALERT */
+    .alert{
+        border-radius:12px;
+        font-size:0.9rem;
+    }
+    /* LOGO */
+    .logo-fixed{
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 80px;
+        height: auto;
+        z-index: 1000;
 
+        border-radius: 16px;
+        background: rgba(255,255,255,0.08);
+        padding: 8px;
+        backdrop-filter: blur(10px);
+
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
 </style>
 
 </head>
 
 <body>
 
-<div class="login-box">
+    <img src="../img/logo-servimed.png" alt="ServiMed Logo" class="logo-fixed">
 
-    <div class="brand">馃┖ Servi-MED</div>
-    <div class="subtitle">Sistema de reservas oftalmol贸gicas</div>
+    <div class="login-box">
 
-    <?php if(isset($msg)): ?>
-        <div class="alert alert-danger">
-            <?= $msg ?>
-        </div>
-    <?php endif; ?>
+        <div class="brand">Servi-MED</div>
+        <div class="subtitle">Sistema de reservas</div>
 
-    <form method="post" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        <?php if(isset($msg)): ?>
+            <div class="alert alert-danger">
+                <?= $msg ?>
+            </div>
+        <?php endif; ?>
 
-        <input type="email"
-               name="email"
-               class="form-control"
-               placeholder="Correo electr贸nico"
-               required>
+        <form method="post" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 
-        <input type="password"
-               name="clave"
-               class="form-control"
-               placeholder="Contrase帽a"
-               required>
+            <input type="email"
+                name="email"
+                class="form-control"
+                placeholder="Correo electrónico"
+                required>
 
-        <input type="hidden" name="confirm" value="1">
+            <input type="password"
+                name="clave"
+                class="form-control"
+                placeholder="Contraseña"
+                required>
 
-        <button type="submit" class="btn-login">
-            Ingresar al sistema
-        </button>
+            <input type="hidden" name="confirm" value="1">
 
+            <button type="submit" class="btn-login">
+                Ingresar al sistema
+            </button>
 
+        </form>
 
-    </form>
-
-</div>
+    </div>
 
 </body>
 </html>

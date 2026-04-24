@@ -36,7 +36,7 @@
 </head>
 <style>
     body {
-        background: #0f172a;
+        background: #7a85a0;
         color: #e2e8f0;
          padding-top: 90px;
     }

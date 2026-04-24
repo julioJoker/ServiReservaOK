@@ -21,7 +21,7 @@ if (
 $model = new EmpleadoModel;
 $empleados = $model->getEmpleados();
 
-$title = 'Empleados';
+$title = 'Funcionarios';
 ?>
 
 <!DOCTYPE html>
@@ -36,158 +36,144 @@ $title = 'Empleados';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    body {
-        background: #0f172a; /* azul oscuro elegante */
-        color: #e5e7eb;
-        padding-top: 80px;
-    }
 
-    /* Card */
-    .card-custom {
-        background: #1e293b;
-        border-radius: 16px;
-        border: 1px solid #334155;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    }
+/* ===== FONDO ===== */
+body {
+    background: #4c505f;
+    color: #1e293b;
+    padding-top: 80px;
+    font-family: system-ui, sans-serif;
+}
 
-    /* Títulos */
-    h4 {
-        color: #f1f5f9;
-        font-weight: 600;
-    }
+/* ===== CONTENEDOR ===== */
+.container {
+    max-width: 1100px;
+}
 
-    /* Tabla */
-    .table {
-        color: #e5e7eb;
-    }
+/* ===== CARD ===== */
+.card-custom {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
 
-    .table thead {
-        background: #020617;
-        color: #38bdf8;
-    }
+/* ===== HEADER ===== */
+.title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-    .table-hover tbody tr:hover {
-        background: #1e293b;
-    }
+.title-bar h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0f172a;
+}
 
-    /* Inputs */
-    .form-control {
-        background: #020617;
-        border: 1px solid #334155;
-        color: #e5e7eb;
-        border-radius: 10px;
-    }
+/* ===== TABLA ===== */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
 
-    .form-control:focus {
-        background: #020617;
-        color: #fff;
-        border-color: #38bdf8;
-        box-shadow: 0 0 0 0.2rem rgba(56,189,248,0.2);
-    }
+.table thead {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
 
-    /* Botones */
-    .btn {
-        border-radius: 10px;
-    }
+.table th {
+    border-bottom: 1px solid #e2e8f0;
+}
 
-    .btn-success {
-        background: linear-gradient(45deg, #22c55e, #16a34a);
-        border: none;
-    }
+.table td {
+    border-bottom: 1px solid #f1f5f9;
+}
 
-    .btn-success:hover {
-        opacity: 0.9;
-    }
+.table tbody tr:hover {
+    background: #f8fafc;
+}
 
-    .btn-outline-secondary {
-        border-color: #64748b;
-        color: #cbd5f5;
-    }
+/* ===== LINKS ===== */
+a.text-info {
+    color: #2563eb !important;
+}
 
-    .btn-outline-secondary:hover {
-        background: #334155;
-        color: #fff;
-    }
+a.text-info:hover {
+    text-decoration: underline;
+}
 
-    /* Badge */
-    .badge {
-        background: #0ea5e9;
-    }
+/* ===== BOTÓN PRINCIPAL ===== */
+.btn-success {
+    background: #2563eb;
+    border: none;
+    font-weight: 500;
+}
 
-    /* Alert */
-    .alert {
-        border-radius: 10px;
-    }
+.btn-success:hover {
+    background: #1d4ed8;
+}
 
-    /* Title bar */
-    .title-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+/* ===== BOTONES ACCIONES ===== */
+.btn-glass-info {
+    background: #e0f2fe;
+    color: #0284c7;
+    border: none;
+}
 
-    /* Botón tipo glass (Ver) */
-        .btn-glass-info {
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            backdrop-filter: blur(6px);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
+.btn-glass-info:hover {
+    background: #bae6fd;
+}
 
-        .btn-glass-info:hover {
-            background: rgba(56, 189, 248, 0.3);
-            color: #fff;
-        }
+.btn-glass-primary {
+    background: #eef2ff;
+    color: #4f46e5;
+    border: none;
+}
 
-        /* Botón tipo glass (Editar) */
-        .btn-glass-primary {
-            background: rgba(99, 102, 241, 0.15);
-            color: #818cf8;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            backdrop-filter: blur(6px);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
+.btn-glass-primary:hover {
+    background: #e0e7ff;
+}
 
-        .btn-glass-primary:hover {
-            background: rgba(99, 102, 241, 0.3);
-            color: #fff;
-        }
-
-        /* Base badge */
+/* ===== BADGES ===== */
 .badge-role {
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
-    backdrop-filter: blur(6px);
-    border: 1px solid transparent;
-    display: inline-block;
 }
 
-/* Administrador */
+/* Roles */
 .badge-admin {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border-color: rgba(239, 68, 68, 0.3);
+    background: #fee2e2;
+    color: #dc2626;
 }
 
-/* Supervisor */
 .badge-supervisor {
-    background: rgba(251, 191, 36, 0.15);
-    color: #facc15;
-    border-color: rgba(251, 191, 36, 0.3);
+    background: #fef3c7;
+    color: #d97706;
 }
 
-/* Usuario normal */
 .badge-user {
-    background: rgba(56, 189, 248, 0.15);
-    color: #38bdf8;
-    border-color: rgba(56, 189, 248, 0.3);
+    background: #e0f2fe;
+    color: #0284c7;
 }
+
+/* ===== ALERT ===== */
+.alert {
+    border-radius: 10px;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+    border-radius: 8px;
+}
+
 </style>
 </head>
 

@@ -104,5 +104,35 @@ public function addPaciente($rut, $nombre, $email, $fecha_nacimiento, $fonasa, $
         ]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        
+    }
+
+
+    public function getFichasPaciente($id)
+    {
+        $sql = $this->_db->prepare("
+            SELECT 
+                id,
+                paciente_id,
+                nombre_profe,
+                especialidad,
+                nombre_paciente,
+                rut,
+                peso,
+                altura,
+                sintomas,
+                observacion,
+                tratamiento,
+                created_at
+            FROM ficha_paciente
+            WHERE paciente_id = ?
+        ");
+
+        $sql->bindParam(1, $id);
+        $sql->execute();
+
+        return $sql->fetchAll();
     }
 }

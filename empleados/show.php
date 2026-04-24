@@ -35,7 +35,7 @@
 
     //print_r($roles);exit;
 
-    $title = 'Empleados';
+    $title = 'Funcionarios';
 
 ?>
 <?php if(isset($_SESSION['autenticado']) && ($_SESSION['usuario_rol'] == 'Administrador' || ($_SESSION['usuario_rol']) == 'Supervisor') || $_SESSION['usuario_id'] == $usuario['id']): ?>

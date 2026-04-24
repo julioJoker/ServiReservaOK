@@ -49,26 +49,59 @@ class ReservaModel extends Model
         return $res->fetch();
     }
 
-    public function getAddFichaPaciente($id_ficha,$nombre_profe,$especialidad_nom ,$nombre_paciente,$rutPaciente,$peso, $altura,$data_sintomas, $data_observacion ,$data_tratamiento  )  
-{
+    //     public function getAddFichaPaciente($id_ficha,$nombre_profe,$especialidad_nom ,$nombre_paciente,$rutPaciente,$peso, $altura,$data_sintomas, $data_observacion ,$data_tratamiento  )  
+    // {
+        
+    //     $res = $this->_db->prepare("INSERT INTO `ficha_paciente`( nombre_profecional, Especialidad_ficha, nombre_paciente, rut_paciente, peso, altura, data_sintomas, data_observacion, data_tratamiento) VALUES (?,?,?,?,?,?,?,?,?)");
     
-    $res = $this->_db->prepare("INSERT INTO `ficha_paciente`(id_ficha, nombre_profecional, Especialidad_ficha, nombre_paciente, rut_paciente, peso, altura, data_sintomas, data_observacion, data_tratamiento) VALUES (?,?,?,?,?,?,?,?,?,?)");
-   
-    $res->bindParam(1, $id_ficha);
-    $res->bindParam(2, $nombre_profe);
-    $res->bindParam(3, $especialidad_nom);
-    $res->bindParam(4, $nombre_paciente);
-    $res->bindParam(5, $rutPaciente);
-    $res->bindParam(6, $peso);
-    $res->bindParam(7, $altura);
-    $res->bindParam(8, $data_sintomas);
-    $res->bindParam(9, $data_observacion);
-    $res->bindParam(10, $data_tratamiento);
-    $res->execute();
+    //     $res->bindParam(1, $id_ficha);
+    //     $res->bindParam(2, $nombre_profe);
+    //     $res->bindParam(3, $especialidad_nom);
+    //     $res->bindParam(4, $nombre_paciente);
+    //     $res->bindParam(5, $rutPaciente);
+    //     $res->bindParam(6, $peso);
+    //     $res->bindParam(7, $altura);
+    //     $res->bindParam(8, $data_sintomas);
+    //     $res->bindParam(9, $data_observacion);
+    //     $res->bindParam(10, $data_tratamiento);
+    //     $res->execute();
 
-    $row = $res->rowCount();
-    return $row;
-}
+    //     $row = $res->rowCount();
+    //     return $row;
+    // }
+
+    public function getAddFichaPaciente(
+        $id_ficha,
+        $nombre_profe,
+        $especialidad_nom,
+        $nombre_paciente,
+        $rutPaciente,
+        $peso,
+        $altura,
+        $data_sintomas,
+        $data_observacion,
+        $data_tratamiento
+    ) {
+
+        $sql = "INSERT INTO ficha_paciente 
+        (paciente_id, nombre_profe, especialidad, nombre_paciente, rut, peso, altura, sintomas, observacion, tratamiento) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->_db->prepare($sql);
+
+        return $stmt->execute([
+            $id_ficha,           // ✅ correcto
+            $nombre_profe,
+            $especialidad_nom,
+            $nombre_paciente,
+            $rutPaciente,
+            $peso,
+            $altura,
+            $data_sintomas,      // ✅ correcto
+            $data_observacion,   // ✅ correcto
+            $data_tratamiento    // ✅ correcto
+        ]);
+    }
 
     public function getReservaPaciente($paciente)
     {
@@ -162,4 +195,15 @@ class ReservaModel extends Model
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function existeFichaPaciente($id)
+    {
+        $sql = "SELECT id FROM ficha_paciente WHERE paciente_id = ?";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC); // devuelve array o false
+    }
 }
+
+

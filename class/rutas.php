@@ -44,8 +44,10 @@ define('ADD_PACIENTE', PACIENTES . 'add.php');
 define('SHOW_PACIENTE', PACIENTES . 'show.php?paciente=' . PARAM);
 define('EDIT_PACIENTE', PACIENTES . 'edit.php?paciente=' . PARAM);
 define('SHOW_FICHASPACIEN', PACIENTES . 'show_fichasPa.php?paciente=' . PARAM);
-define('ADD_FICHAPACIEN', PACIENTES . 'addFichaP.php?paciente=' . PARAM);
+define('ADD_FICHAPACIEN', PACIENTES . 'addFichaP.php');
 define('SHOW_FICHAPACIEN', PACIENTES . 'showFichaP.php?paciente=' . PARAM);
+define('VER_FICHA', PACIENTES . 'ver_ficha.php');
+ 
 
 #rutas de horarios
 define('HORARIOS', BASE_URL . 'horarios/');

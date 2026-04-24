@@ -66,49 +66,144 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
     <script src="../js/funciones.js"></script>
 </head>
+<style>
+
+    /* ===== FONDO ===== */
+    body {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        font-family: system-ui, sans-serif;
+        color: #e5e7eb;
+    }
+
+    /* ===== CARD FORM ===== */
+    .form-box {
+        max-width: 450px;
+        margin: 80px auto;
+        background: #ffffff;
+        color: #1e293b;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    /* ===== TITULO ===== */
+    .form-box h4 {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    /* SUBTEXTO */
+    .form-box .subtitle {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #64748b;
+        margin-bottom: 20px;
+    }
+
+    /* INPUTS */
+    .form-control {
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 0.15rem rgba(37,99,235,0.2);
+    }
+
+    /* BOTONES */
+    .btn-success {
+        background: #2563eb;
+        border: none;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .btn-success:hover {
+        background: #1d4ed8;
+    }
+
+    /* BOTÓN VOLVER */
+    .btn-outline-primary {
+        width: 100%;
+        margin-top: 10px;
+        border-radius: 10px;
+    }
+
+    /* ALERT */
+    .alert {
+        border-radius: 10px;
+    }
+
+    /* EMPLEADO BOX */
+    .empleado-box {
+        background: #f1f5f9;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+</style>
 <body>
     <header>
         <!-- llamada a archivo de menu -->
         <?php include('../partials/menu.php'); ?>
     </header>
-    <div class="container-fluid">
-        <div class="col-md-6 offset-md-3">
-            <h4><?php echo $title; ?></h4>
+    <div class="form-box">
 
-            <p class="text-danger">Campos obligatorios *</p>
+        <h4>👤 <?php echo $title; ?></h4>
+        <div class="subtitle">Crear cuenta de acceso</div>
 
-            <?php if(isset($msg)): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?php echo $msg; ?>
+        <?php if(isset($msg)): ?>
+            <div class="alert alert-danger">
+                <?php echo $msg; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if($empleado): ?>
+
+            <div class="empleado-box">
+                Empleado: <?php echo $empleado['nombre']; ?>
+            </div>
+
+            <form method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Password *</label>
+                    <input type="password" name="clave" class="form-control"
+                        oncopy="return false" onpaste="return false"
+                        placeholder="Ingrese contraseña">
                 </div>
-            <?php endif; ?>
 
-            <?php if($empleado): ?>
-                <form name="form" action="" method="post">
-                    <div class="mb-3">
-                        <label for="clave" class="form-label">Empleado: <?php echo $empleado['nombre']; ?> </label>
-                    </div>
-                    <div class="mb-3">
-                        <label for="clave" class="form-label">Password<span class="text-danger">*</span>  </label>
-                        <input type="password" name="clave" class="form-control" oncopy="return false" onpaste="return false" aria-describedby="usuarioHelpInline">
-                        <div id="usuarioHelp" class="form-text text-danger">Ingrese el password del Empleado</div>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Confirmar Password *</label>
+                    <input type="password" name="reclave" class="form-control"
+                        oncopy="return false" onpaste="return false"
+                        placeholder="Repita la contraseña">
+                </div>
 
-                    <div class="mb-3">
-                        <label for="reclave" class="form-label">Confirmar Password<span class="text-danger">*</span>  </label>
-                        <input type="password" name="reclave" class="form-control" oncopy="return false" onpaste="return false" aria-describedby="usuarioHelpInline">
-                        <div id="usuarioHelp" class="form-text text-danger">Confirme el password del Empleado</div>
-                    </div>
-                    <div class="mb-3">
-                        <input type="hidden" name="confirm" value="1">
-                        <button type="submit" class="btn btn-outline-success">Crear</button>
-                        <a href="<?php echo SHOW_EMPLEADO . $id_empleado; ?>" class="btn btn-outline-primary">Volver</a>
-                    </div>
-                </form>
-            <?php else: ?>
-                <p class="text-info">La cuenta no pudo ser creada</p>
-            <?php endif; ?>
-        </div>
+                <input type="hidden" name="confirm" value="1">
+
+                <button type="submit" class="btn btn-success">
+                    Crear cuenta
+                </button>
+
+                <a href="<?php echo SHOW_EMPLEADO . $id_empleado; ?>" class="btn btn-outline-primary">
+                    Volver
+                </a>
+
+            </form>
+
+        <?php else: ?>
+
+            <div class="alert alert-info text-center">
+                La cuenta no pudo ser creada
+            </div>
+
+        <?php endif; ?>
+
     </div>
 </body>
 </html>
